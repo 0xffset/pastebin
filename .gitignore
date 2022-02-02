@@ -2,5 +2,4 @@
 .env
 /content/users/*
 content/public/*
-!content/public/user_db.example
 **/.DS_Store
