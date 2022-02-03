@@ -9,6 +9,7 @@ ARG RUST_APP
 RUN USER=root cargo new ${RUST_APP}
 WORKDIR /${RUST_APP}
 COPY Cargo.toml Cargo.toml
+COPY Cargo.lock Cargo.lock
 
 RUN cargo build --release
 
