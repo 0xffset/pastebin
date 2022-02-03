@@ -28,6 +28,7 @@ FROM debian:buster-slim
 # use the global variable
 ARG RUST_APP
 ARG PORT
+
 # location of the program
 ARG APP=/usr/src/rust_program
 

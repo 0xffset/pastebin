@@ -4,7 +4,7 @@ use serde::Deserialize;
 
 use crate::logic::{token_exists_and_valid, AppStateType};
 
-#[get("/{paste}")]
+#[get("/paste/{paste}")]
 async fn paste(data: AppStateType<'_>, web::Path(paste): web::Path<String>) -> impl Responder {
     let data = data.lock().unwrap();
     match data.read_paste(&paste) {
@@ -44,7 +44,7 @@ async fn paste_upload(
         Ok(link) => HttpResponse::Ok()
             .set_header("Content-Type", "text/plain")
             .set_header("X-Content-Type-Options", "nosniff")
-            .body(format!("https://paste.0xffset.com/{}", link)),
+            .body(format!("{}/paste/{}", std::env::var("URL").unwrap(), link)),
         Err(_) => {
             return HttpResponse::InternalServerError()
                 .body("<p style=\"color: red;\">Internal Server Error</p>")

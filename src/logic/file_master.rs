@@ -1,4 +1,9 @@
-use std::{collections::HashMap, fs::{self, File}, io::{Read, Write}, path::Path};
+use std::{
+    collections::HashMap,
+    fs::{self, File},
+    io::{Read, Write},
+    path::Path,
+};
 
 use uuid::Uuid;
 
@@ -17,52 +22,56 @@ impl FileMaster {
         // make sure content directory tree is created else create it
         if !Path::new("content").exists() {
             fs::create_dir("content")?;
-        }
-        if !Path::new("content/public").exists() {
-            fs::create_dir("content/public")?;
-        }
-        if !Path::new("content/users").exists() {
-            fs::create_dir("content/users")?;
-        }
-
-        // read all public pastes names
-        let public = std::fs::read_dir("content/public")?;
-        for entry in public {
-            let entry = entry?;
-            // get filename and save it into map with "public" as value
-            if let Some(file_stem) = entry.path().file_stem() {
-                fm.file_map.insert(
-                    file_stem.to_string_lossy().to_string(),
-                    "public".to_string(),
-                );
+        } else {
+            if !Path::new("content/public").exists() {
+                fs::create_dir("content/public")?;
             } else {
-                return Err(std::io::Error::new(
-                    std::io::ErrorKind::Unsupported,
-                    format!("Error reading public paste file: {:#?}", entry),
-                ));
-            }
-        }
-
-        // read all users pastes names
-        let users = std::fs::read_dir("content/users")?;
-        for entry in users {
-            let entry = entry?;
-            // check if entry is really directory else skip
-            if entry.path().is_dir() {
-                let name = entry.file_name().to_string_lossy().to_string();
-                let user = std::fs::read_dir(format!("content/users/{}", name))?;
-
-                // get filenames and save it into map with user name as value
-                for entry in user {
+                // skipped if dir didnt exist before
+                // read all public pastes names
+                let public = std::fs::read_dir("content/public")?;
+                for entry in public {
                     let entry = entry?;
+                    // get filename and save it into map with "public" as value
                     if let Some(file_stem) = entry.path().file_stem() {
-                        fm.file_map
-                            .insert(file_stem.to_string_lossy().to_string(), name.clone());
+                        fm.file_map.insert(
+                            file_stem.to_string_lossy().to_string(),
+                            "public".to_string(),
+                        );
                     } else {
                         return Err(std::io::Error::new(
                             std::io::ErrorKind::Unsupported,
-                            format!("Error reading {} paste file: {:#?}", name, entry),
+                            format!("Error reading public paste file: {:#?}", entry),
                         ));
+                    }
+                }
+            }
+
+            if !Path::new("content/users").exists() {
+                fs::create_dir("content/users")?;
+            } else {
+                // skipped if dir didnt exist before
+                // read all users pastes names
+                let users = std::fs::read_dir("content/users")?;
+                for entry in users {
+                    let entry = entry?;
+                    // check if entry is really directory else skip
+                    if entry.path().is_dir() {
+                        let name = entry.file_name().to_string_lossy().to_string();
+                        let user = std::fs::read_dir(format!("content/users/{}", name))?;
+
+                        // get filenames and save it into map with user name as value
+                        for entry in user {
+                            let entry = entry?;
+                            if let Some(file_stem) = entry.path().file_stem() {
+                                fm.file_map
+                                    .insert(file_stem.to_string_lossy().to_string(), name.clone());
+                            } else {
+                                return Err(std::io::Error::new(
+                                    std::io::ErrorKind::Unsupported,
+                                    format!("Error reading {} paste file: {:#?}", name, entry),
+                                ));
+                            }
+                        }
                     }
                 }
             }
@@ -82,7 +91,7 @@ impl FileMaster {
             if !Path::new(&user_path).exists() {
                 fs::create_dir(user_path)?;
             }
-            
+
             file = File::create(format!("content/users/{}/{}", path, filename))?;
         }
         file.write_all(content.as_bytes())?;

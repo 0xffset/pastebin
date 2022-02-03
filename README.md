@@ -1,7 +1,7 @@
 # Simple pastebin server 
 Made in Rust with `actix web` as the web server, `argon2` as hashing algorithm and the file system as database.
 
-Running in a Dockercontainer
+The server is entirely dockerized.
 
 ### Small 
  - No DB
@@ -18,4 +18,4 @@ Running in a Dockercontainer
 
  ### How to run?
  1) Rename the `.env.example` file to `.evn` and fill in the required values
- 2) TODO update
+ 2) The server can now be ran with `docker compose build && docker compose up`
