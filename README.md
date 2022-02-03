@@ -1,5 +1,7 @@
 # Simple pastebin server 
-Made in Rust with `actix web` as the web server, `argon2` as hashing algorithm and the file system as database
+Made in Rust with `actix web` as the web server, `argon2` as hashing algorithm and the file system as database.
+
+Running in a Dockercontainer
 
 ### Small 
  - No DB
@@ -16,4 +18,4 @@ Made in Rust with `actix web` as the web server, `argon2` as hashing algorithm a
 
  ### How to run?
  1) Rename the `.env.example` file to `.evn` and fill in the required values
- 2) Now you are ready to run the server with `cargo run` or `cargo run --release`
+ 2) TODO update

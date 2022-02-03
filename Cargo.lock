@@ -1137,6 +1137,7 @@ dependencies = [
  "dotenv",
  "env_logger",
  "lazy_static",
+ "log",
  "rust-argon2",
  "serde",
  "uuid",

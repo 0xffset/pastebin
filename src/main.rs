@@ -25,6 +25,8 @@ async fn favicon() -> std::io::Result<NamedFile> {
 async fn main() -> std::io::Result<()> {
     dotenv().ok();
     let port = std::env::var("PORT").unwrap();
+    
+    println!("Starting server in port {}...", port);
 
     std::env::set_var("RUST_LOG", "actix_web=error");
     env_logger::init();
@@ -46,7 +48,7 @@ async fn main() -> std::io::Result<()> {
             .service(Files::new("/js", Path::new("public/js")).prefer_utf8(true))
             .service(Files::new("/css", Path::new("public/css")).prefer_utf8(true))
     })
-    .bind(format!("127.0.0.1:{}", port))?
+    .bind(format!("0.0.0.0:{}", port))?
     .run()
     .await
 }

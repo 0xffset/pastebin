@@ -1,0 +1,7 @@
+.git
+target
+.gitignore
+docker-compose.yml
+Dockerfile
+**/.DS_Store
+content/
