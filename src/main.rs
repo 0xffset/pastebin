@@ -26,7 +26,7 @@ async fn main() -> std::io::Result<()> {
     dotenv().ok();
     let port = std::env::var("PORT").unwrap();
     
-    println!("Starting server in port {}...", port);
+    println!("Starting server 0.0.0.0:{}...", port);
 
     std::env::set_var("RUST_LOG", "actix_web=error");
     env_logger::init();
